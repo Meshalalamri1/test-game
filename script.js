@@ -163,23 +163,15 @@ function updateTeamTurn() {
   }
 }
 
-// تحميل بيانات اللعبة من التخزين المحلي
+// ثابت - استخدام البيانات المعرفة مسبقًا فقط
 function loadGameData() {
-  const savedData = localStorage.getItem('gameData');
-  if (savedData) {
-    // استخدام البيانات المحفوظة إذا وجدت
-    gameData = JSON.parse(savedData);
-    console.log("تم تحميل البيانات المحفوظة");
-  } else {
-    // استخدام البيانات المعرفة مسبقًا إذا لم تكن هناك بيانات محفوظة
-    console.log("تم تحميل بيانات اللعبة الافتراضية");
-  }
+  // استخدام البيانات المعرفة مسبقًا في المتغير gameData
+  console.log("تم تحميل بيانات اللعبة المحددة مسبقًا");
 }
 
-// حفظ بيانات اللعبة في التخزين المحلي
+// لا حاجة للحفظ حيث أننا نستخدم بيانات ثابتة
 function saveGameData() {
-  localStorage.setItem('gameData', JSON.stringify(gameData));
-  console.log("تم حفظ بيانات اللعبة");
+  console.log("تم إيقاف حفظ البيانات في وضع العرض التجريبي");
 }
 
 // Render the game board
@@ -398,11 +390,11 @@ function revealAnswer() {
   showAnswerBtn.disabled = true;
 }
 
-// Award points to a team
+// Award points to a team - في وضع العرض التجريبي لا يتم تغيير حالة السؤال
 function awardPoints(teamIndex) {
   if (!currentQuestion) return;
-  // تغيير حالة السؤال ليصبح مجاب عنه
-  currentQuestion.question.answered = true;
+  // لا نغير حالة السؤال لإبقائه متاحًا للاستخدام المتكرر
+  // currentQuestion.question.answered = true;
   if (teamIndex !== -1) {
     gameData.teams[teamIndex].score += currentQuestion.question.points;
     alert(`تم إضافة ${currentQuestion.question.points} نقطة إلى ${gameData.teams[teamIndex].name}`);
@@ -413,8 +405,7 @@ function awardPoints(teamIndex) {
   updateScores();
   updateTeamTurn();
   closeModal();
-  // حفظ التغييرات وإعادة رسم اللوحة
-  saveGameData();
+  // نعيد رسم اللوحة بدون تغيير حالة الأسئلة
   renderGameBoard();
 }
 
